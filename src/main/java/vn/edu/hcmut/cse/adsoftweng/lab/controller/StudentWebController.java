@@ -49,6 +49,13 @@ public class StudentWebController {
         return "create";
     }
 
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable String id, Model model) {
+        Student student = service.getById(id); // lấy dữ liệu cũ
+        model.addAttribute("student", student);
+        return "create"; // dùng lại form create
+    }
+
     @PostMapping("/save")
     public String saveStudent(@ModelAttribute Student student) {
         service.save(student);

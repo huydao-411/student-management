@@ -4,6 +4,7 @@ import vn.edu.hcmut.cse.adsoftweng.lab.entity.Student;
 import vn.edu.hcmut.cse.adsoftweng.lab.repository.StudentRepository;
 
 import org.springframework.stereotype.Service;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
@@ -29,6 +30,14 @@ public class StudentService {
     }
 
     public void save(Student student) {
+        if (student.getId() == null || student.getId().isEmpty()) {
+            student.setId(generateId());
+        }
         repository.save(student);
+    }
+    
+    public String generateId() {
+        Long count = repository.count() + 1;
+        return String.valueOf(count);
     }
 }
