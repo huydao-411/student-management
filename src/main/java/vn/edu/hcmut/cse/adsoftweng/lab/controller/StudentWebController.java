@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import vn.edu.hcmut.cse.adsoftweng.lab.service.StudentService;
 import vn.edu.hcmut.cse.adsoftweng.lab.entity.Student;
 import java.util.List;
+import java.util.Comparator;
 
 @Controller
 @RequestMapping("/students")
@@ -20,13 +21,18 @@ public class StudentWebController {
     private StudentService service;
     
     @GetMapping
-    public String getAllStudents(@RequestParam(required = false) String keyword,Model model) {
+    public String getAllStudents(@RequestParam(required = false) String keyword, Model model) {
+
         List<Student> students;
+
         if (keyword != null && !keyword.isEmpty()) {
-            students = service.searchByName(keyword); 
+            students = service.searchByName(keyword);
+            students.sort(Comparator.comparing(s -> Long.valueOf(s.getId()))); // sort tại đây
         } else {
             students = service.getAll();
+            students.sort(Comparator.comparing(s -> Long.valueOf(s.getId()))); // sort tại đây
         }
+
         model.addAttribute("dsSinhVien", students);
         return "students";
     }
